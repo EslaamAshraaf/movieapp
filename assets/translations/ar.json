@@ -1,0 +1,21 @@
+{
+  "register": "تسجيل",
+  "name": "الاسم",
+  "enter_name": "أدخل اسمك",
+  "email": "البريد الإلكتروني",
+  "enter_email": "أدخل بريدك الإلكتروني",
+  "password": "كلمة المرور",
+  "enter_password": "أدخل كلمة المرور",
+  "confirm_password": "تأكيد كلمة المرور",
+  "enter_confirm_password": "أدخل كلمة المرور مرة أخرى",
+  "phone": "رقم الهاتف",
+  "enter_phone": "أدخل رقم هاتفك",
+  "create_account": "إنشاء حساب",
+  "avatar": "الصورة الرمزية",
+  "forget_password": "نسيت كلمة المرور؟",
+  "login": "تسجيل الدخول",
+  "dont_have_account": "ليس لديك حساب؟",
+  "create_one": "إنشاء حساب",
+  "or": "أو",
+  "login_google": "تسجيل الدخول باستخدام جوجل"
+}

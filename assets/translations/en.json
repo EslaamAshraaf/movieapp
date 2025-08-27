@@ -1,0 +1,21 @@
+{
+  "register": "Register",
+  "name": "Name",
+  "enter_name": "Enter your name",
+  "email": "Email",
+  "enter_email": "Enter your email",
+  "password": "Password",
+  "enter_password": "Enter your password",
+  "confirm_password": "Confirm Password",
+  "enter_confirm_password": "Enter your password again",
+  "phone": "Phone",
+  "enter_phone": "Enter your phone number",
+  "create_account": "Create Account",
+  "avatar": "Avatar",
+  "forget_password": "Forget password?",
+  "login": "Login",
+  "dont_have_account": "Don’t have an account?",
+  "create_one": "Create one",
+  "or": "OR",
+  "login_google": "Login with Google"
+}
