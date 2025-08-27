@@ -139,10 +139,10 @@ class Browse extends StatelessWidget {
 }
 
 final List<Map<String, String>> movies = [
-  {"image": "images/Blzk.png", "rating": "7.7"},
-  {"image": "images/joker.png", "rating": "8.5"},
-  {"image": "images/ironman.png", "rating": "7.9"},
-  {"image": "images/war.png", "rating": "8.0"},
-  {"image": "images/avenger.png", "rating": "8.2"},
-  {"image": "images/doctor.png", "rating": "7.6"},
+  {"image": "assets/images/Blzk.png", "rating": "7.7"},
+  {"image": "assets/images/joker.png", "rating": "8.5"},
+  {"image": "assets/images/ironman.png", "rating": "7.9"},
+  {"image": "assets/images/war.png", "rating": "8.0"},
+  {"image": "assets/images/avenger.png", "rating": "8.2"},
+  {"image": "assets/images/doctor.png", "rating": "7.6"},
 ];

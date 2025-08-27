@@ -14,7 +14,7 @@ class Moviedetails extends StatelessWidget {
           // Background Image (fixed)
           Positioned.fill(
             child: Image.asset(
-              "assets/drstrange.png",
+              "assets/images/drstrange.png",
               fit: BoxFit.contain,
               alignment: Alignment.topCenter,
             ),
@@ -111,7 +111,7 @@ class Moviedetails extends StatelessWidget {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Image.asset(
-                        "assets/homeScreenshot.png",
+                        "assets/images/homeScreenshot.png",
                         height: 120,
                         width: double.infinity,
                         fit: BoxFit.cover,

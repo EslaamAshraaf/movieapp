@@ -16,19 +16,19 @@ class Home extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage("icons/home.png")),
+            icon: ImageIcon(AssetImage("assets/icons/home.png")),
             label: "",
           ),
           BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage("icons/search.png")),
+            icon: ImageIcon(AssetImage("assets/icons/search.png")),
             label: "",
           ),
           BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage("icons/bookmark.png")),
+            icon: ImageIcon(AssetImage("assets/icons/browse.png")),
             label: "",
           ),
           BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage("icons/person.png")),
+            icon: ImageIcon(AssetImage("assets/icons/profile.png")),
             label: "",
           ),
         ],
@@ -36,7 +36,7 @@ class Home extends StatelessWidget {
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset("images/1917.png", fit: BoxFit.cover),
+            child: Image.asset("assets/images/1917.png", fit: BoxFit.cover),
           ),
 
           Positioned.fill(
@@ -61,7 +61,7 @@ class Home extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Image.asset(
-                    "images/Available Now.png",
+                    "assets/images/Available Now.png",
                     width: double.infinity,
                     alignment: Alignment.topCenter,
                   ),
@@ -83,7 +83,7 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           image: const DecorationImage(
-                            image: AssetImage("images/baby.png"),
+                            image: AssetImage("assets/images/baby.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -95,7 +95,7 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           image: const DecorationImage(
-                            image: AssetImage("images/1917small.png"),
+                            image: AssetImage("assets/images/1917small.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -110,7 +110,7 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           image: const DecorationImage(
-                            image: AssetImage("images/Captain.png"),
+                            image: AssetImage("assets/images/Captain.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -120,7 +120,7 @@ class Home extends StatelessWidget {
                 ),
 
                 /// Watch Now banner
-                Image.asset("images/Watch Now.png", width: double.infinity),
+                Image.asset("assets/images/Watch Now.png", width: double.infinity),
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -160,7 +160,7 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           image: const DecorationImage(
-                            image: AssetImage("images/captain_small.png"),
+                            image: AssetImage("assets/images/captain_small.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -171,7 +171,7 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           image: const DecorationImage(
-                            image: AssetImage("images/batMan.png"),
+                            image: AssetImage("assets/images/batMan.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -182,7 +182,7 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           image: const DecorationImage(
-                            image: AssetImage("images/black_woman.png"),
+                            image: AssetImage("assets/images/black_woman.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -227,7 +227,7 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           image: const DecorationImage(
-                            image: AssetImage("images/captain_small.png"),
+                            image: AssetImage("assets/images/captain_small.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -238,7 +238,7 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           image: const DecorationImage(
-                            image: AssetImage("images/batMan.png"),
+                            image: AssetImage("assets/images/batMan.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -249,7 +249,7 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           image: const DecorationImage(
-                            image: AssetImage("images/black_woman.png"),
+                            image: AssetImage("assets/images/black_woman.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -293,7 +293,7 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           image: const DecorationImage(
-                            image: AssetImage("images/captain_small.png"),
+                            image: AssetImage("assets/images/captain_small.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -304,7 +304,7 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           image: const DecorationImage(
-                            image: AssetImage("images/batMan.png"),
+                            image: AssetImage("assets/images/batMan.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -315,7 +315,7 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           image: const DecorationImage(
-                            image: AssetImage("images/black_woman.png"),
+                            image: AssetImage("assets/images/black_woman.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -359,7 +359,7 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           image: const DecorationImage(
-                            image: AssetImage("images/captain_small.png"),
+                            image: AssetImage("assets/images/captain_small.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -370,7 +370,7 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           image: const DecorationImage(
-                            image: AssetImage("images/batMan.png"),
+                            image: AssetImage("assets/images/batMan.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -381,7 +381,7 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
                           image: const DecorationImage(
-                            image: AssetImage("images/black_woman.png"),
+                            image: AssetImage("assets/images/black_woman.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
