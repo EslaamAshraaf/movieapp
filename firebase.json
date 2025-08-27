@@ -1,0 +1,1 @@
+{"flutter":{"platforms":{"android":{"default":{"projectId":"movieapp-007","appId":"1:42484224837:android:6fc7ce1f02ba91d632a42c","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"movieapp-007","configurations":{"android":"1:42484224837:android:6fc7ce1f02ba91d632a42c","ios":"1:42484224837:ios:2da886b7dd8c0d1532a42c"}}}}}}
