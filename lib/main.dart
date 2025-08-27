@@ -3,8 +3,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:movieapp/src/features/auth/presentation/view/Forgotpassword.dart';
 import 'package:movieapp/src/features/auth/presentation/view/loginpage.dart';
 import 'package:movieapp/src/features/auth/presentation/view/registerpage.dart';
+import 'package:movieapp/src/features/movies/presentation/view/BrowseScreen.dart';
 import 'package:movieapp/src/features/movies/presentation/view/Homescreen.dart';
 import 'package:movieapp/src/features/movies/presentation/view/Moviedetails.dart';
+import 'package:movieapp/src/features/movies/presentation/view/ProfileScreen.dart';
+import 'package:movieapp/src/features/movies/presentation/view/SearchScreen.dart';
 import 'package:movieapp/src/features/onboarding/presentation/views/view_Main.dart';
 import 'src/features/onboarding/presentation/views/view.dart';
 
@@ -14,10 +17,7 @@ Future<void> main() async {
 
   runApp(
     EasyLocalization(
-      supportedLocales:[
-        Locale('en'),
-        Locale('ar'),
-      ],
+      supportedLocales: [Locale('en'), Locale('ar')],
       path: 'assets/translations',
       startLocale: const Locale('en'),
       child: MyApp(),
@@ -42,12 +42,15 @@ class MyApp extends StatelessWidget {
         Onboardingmain.routename: (_) => Onboardingmain(),
         Onboarding.routename: (_) => Onboarding(),
         Loginpage.routename: (_) => Loginpage(),
-        Registerpage.routename:(_)=>Registerpage(),
-        Forgotpassword.routename:(_)=>Forgotpassword(),
-        Homescreen.routename:(_)=>Homescreen(),
-        Moviedetails.routename:(_)=>Moviedetails(),
+        Registerpage.routename: (_) => Registerpage(),
+        Forgotpassword.routename: (_) => Forgotpassword(),
+        Home.routename: (_) => Home(),
+        Moviedetails.routename: (_) => Moviedetails(),
+        Search.routename: (_) => Search(),
+        Browse.routeName: (_) => Browse(),
+        Profile.routeName: (_) => Profile(),
       },
-      initialRoute: Homescreen.routename,
+      initialRoute: Home.routename,
     );
   }
 }

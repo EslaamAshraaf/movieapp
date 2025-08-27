@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 
-class Homescreen extends StatelessWidget {
+class Home extends StatelessWidget {
   static const String routename = "Home";
 
-  const Homescreen({super.key});
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context) {
-    int selectedIndex = 0;
-
     return Scaffold(
       backgroundColor: const Color(0xFF121312),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedIndex,
         selectedItemColor: Colors.yellow,
         unselectedItemColor: Colors.white,
         backgroundColor: const Color(0xFF282A28),
@@ -41,6 +38,7 @@ class Homescreen extends StatelessWidget {
           Positioned.fill(
             child: Image.asset("images/1917.png", fit: BoxFit.cover),
           ),
+
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
@@ -55,6 +53,7 @@ class Homescreen extends StatelessWidget {
               ),
             ),
           ),
+
           SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -119,6 +118,8 @@ class Homescreen extends StatelessWidget {
                     ],
                   ),
                 ),
+
+                /// Watch Now banner
                 Image.asset("images/Watch Now.png", width: double.infinity),
 
                 Padding(
@@ -214,9 +215,7 @@ class Homescreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
+                SizedBox(height: 10),
                 SizedBox(
                   height: 220,
                   child: ListView(
@@ -282,7 +281,7 @@ class Homescreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: 10),
                 SizedBox(
                   height: 220,
                   child: ListView(
@@ -348,7 +347,7 @@ class Homescreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: 10),
                 SizedBox(
                   height: 220,
                   child: ListView(
@@ -390,7 +389,7 @@ class Homescreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: 10),
               ],
             ),
           ),
