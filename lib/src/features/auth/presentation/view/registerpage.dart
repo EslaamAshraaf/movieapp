@@ -1,8 +1,10 @@
-import 'dart:ui' as ui;
+import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movieapp/src/core/firebase/firbase_manager.dart';
 import 'package:movieapp/src/core/theme/app_color.dart';
+import 'package:movieapp/src/features/movies/presentation/view/Homescreen.dart';
 import '../../../../core/theme/widgets/app_text_form_field.dart';
 
 Widget _buildFlag({
@@ -20,12 +22,7 @@ Widget _buildFlag({
             : null,
       ),
       child: ClipOval(
-        child: Image.asset(
-          asset,
-          width: 32,
-          height: 32,
-          fit: BoxFit.cover,
-        ),
+        child: Image.asset(asset, width: 32, height: 32, fit: BoxFit.cover),
       ),
     ),
   );
@@ -42,7 +39,10 @@ class Registerpage extends StatefulWidget {
 class _RegisterpageState extends State<Registerpage> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
+  final FirebaseManager manager = FirebaseManager();
   @override
   Widget build(BuildContext context) {
     final currentLocale = context.locale.languageCode;
@@ -69,10 +69,12 @@ class _RegisterpageState extends State<Registerpage> {
           child: Column(
             children: [
               const SizedBox(height: 30),
-              Center(child: Image.asset("assets/avatar.png")),
+              Center(child: Image.asset("assets/images/avatar.png")),
               const SizedBox(height: 10),
-              Text(tr("create_one"),
-                  style: TextStyle(color: AppColors.white, fontSize: 19)),
+              Text(
+                tr("create_one"),
+                style: TextStyle(color: AppColors.white, fontSize: 19),
+              ),
               const SizedBox(height: 20),
               AppTextFormField(
                 label: tr("name"),
@@ -86,6 +88,7 @@ class _RegisterpageState extends State<Registerpage> {
                 hintText: tr("enter_email"),
                 iconPath: "assets/icons/email.png",
                 keyboardType: TextInputType.emailAddress,
+                controller: emailController,
               ),
               const SizedBox(height: 20),
               AppTextFormField(
@@ -93,6 +96,7 @@ class _RegisterpageState extends State<Registerpage> {
                 hintText: tr("enter_password"),
                 iconPath: "assets/icons/lock.png",
                 obscureText: _obscurePassword,
+                controller: passwordController,
                 suffixIcon: IconButton(
                   onPressed: () {
                     setState(() {
@@ -100,10 +104,11 @@ class _RegisterpageState extends State<Registerpage> {
                     });
                   },
                   icon: Icon(
-                      _obscurePassword
-                          ? CupertinoIcons.eye_slash
-                          : CupertinoIcons.eye,
-                      color: AppColors.yellow),
+                    _obscurePassword
+                        ? CupertinoIcons.eye_slash
+                        : CupertinoIcons.eye,
+                    color: AppColors.yellow,
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -112,6 +117,7 @@ class _RegisterpageState extends State<Registerpage> {
                 hintText: tr("enter_password"),
                 iconPath: "assets/icons/lock.png",
                 obscureText: _obscureConfirmPassword,
+                controller: passwordController,
                 suffixIcon: IconButton(
                   onPressed: () {
                     setState(() {
@@ -119,10 +125,11 @@ class _RegisterpageState extends State<Registerpage> {
                     });
                   },
                   icon: Icon(
-                      _obscureConfirmPassword
-                          ? CupertinoIcons.eye_slash
-                          : CupertinoIcons.eye,
-                      color: AppColors.yellow),
+                    _obscureConfirmPassword
+                        ? CupertinoIcons.eye_slash
+                        : CupertinoIcons.eye,
+                    color: AppColors.yellow,
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -142,19 +149,26 @@ class _RegisterpageState extends State<Registerpage> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    await manager.createUserWithEmailAndPassword(
+                      emailAddress: emailController.text.trim(),
+                      password: passwordController.text.trim(),
+                    );
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>Home()));
+                  },
                   child: Text(
                     tr("Create Account"),
                     style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400),
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
               ),
               const SizedBox(height: 20),
               Container(
-                width: 100  ,
+                width: 100,
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25),

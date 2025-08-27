@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:movieapp/src/features/auth/presentation/view/Forgotpassword.dart';
@@ -9,11 +10,16 @@ import 'package:movieapp/src/features/movies/presentation/view/Moviedetails.dart
 import 'package:movieapp/src/features/movies/presentation/view/ProfileScreen.dart';
 import 'package:movieapp/src/features/movies/presentation/view/SearchScreen.dart';
 import 'package:movieapp/src/features/onboarding/presentation/views/view_Main.dart';
+import 'src/core/firebase/firebase_options.dart';
 import 'src/features/onboarding/presentation/views/view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(
     EasyLocalization(
@@ -50,7 +56,7 @@ class MyApp extends StatelessWidget {
         Browse.routeName: (_) => Browse(),
         Profile.routeName: (_) => Profile(),
       },
-      initialRoute: Home.routename,
+      initialRoute: Loginpage.routename,
     );
   }
 }

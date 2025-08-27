@@ -6,7 +6,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:movieapp/src/core/theme/app_color.dart';
 import 'package:movieapp/src/features/auth/presentation/view/Forgotpassword.dart';
 import 'package:movieapp/src/features/auth/presentation/view/registerpage.dart';
+import 'package:movieapp/src/features/movies/presentation/view/Homescreen.dart';
 import 'package:movieapp/src/features/movies/presentation/view/Moviedetails.dart';
+import '../../../../core/firebase/firbase_manager.dart';
 import '../../../../core/theme/widgets/app_text_form_field.dart';
 
 Widget _buildFlag({
@@ -30,9 +32,42 @@ Widget _buildFlag({
   );
 }
 
-class Loginpage extends StatelessWidget {
+class Loginpage extends StatefulWidget {
   static const String routename = "loginpage";
   const Loginpage({super.key});
+
+  @override
+  State<Loginpage> createState() => _LoginpageState();
+}
+
+class _LoginpageState extends State<Loginpage> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final FirebaseManager manager = FirebaseManager();
+  bool isLoading = false;
+
+  Future<void> _login() async {
+    setState(() => isLoading = true);
+
+    final auth = FirebaseManager();
+    final credential = await auth.signInWithEmailAndPassword(
+      emailAddress: emailController.text.trim(),
+      password: passwordController.text.trim(),
+    );
+
+    setState(() => isLoading = false);
+
+    if (credential != null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login Successful!')),
+      );
+      Navigator.pushReplacementNamed(context, Home.routename);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login Failed, check your credentials.')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +80,7 @@ class Loginpage extends StatelessWidget {
           child: Column(
             children: [
               const SizedBox(height: 77),
-              Center(child: Image.asset("assets/splash.png")),
+              Center(child: Image.asset("assets/images/splash.png")),
               const SizedBox(height: 70),
 
               AppTextFormField(
@@ -53,6 +88,7 @@ class Loginpage extends StatelessWidget {
                 hintText: tr("enter_email"),
                 iconPath: "assets/icons/email.png",
                 keyboardType: TextInputType.emailAddress,
+                controller: emailController,
               ),
               const SizedBox(height: 20),
 
@@ -61,9 +97,11 @@ class Loginpage extends StatelessWidget {
                 hintText: tr("enter_password"),
                 iconPath: "assets/icons/lock.png",
                 obscureText: true,
+                controller: passwordController,
                 suffixIcon: IconButton(
                   onPressed: () {},
                   icon: Icon(CupertinoIcons.eye_slash, color: AppColors.yellow),
+
                 ),
               ),
               const SizedBox(height: 17),
@@ -93,9 +131,7 @@ class Loginpage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, Moviedetails.routename);
-                  },
+                  onPressed:_login,
                   child: Text(
                     tr("login"),
                     style: const TextStyle(
@@ -174,6 +210,9 @@ class Loginpage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
+
+                  //google signin()
+
                   onPressed: () {},
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,

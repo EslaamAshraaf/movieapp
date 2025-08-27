@@ -14,7 +14,7 @@ class Onboardingmain extends StatelessWidget {
       body: Stack(
         children: [
           Image.asset(
-            "assets/moviesposters.png",
+            "assets/images/moviesposters.png",
             width: double.infinity,
             height: double.infinity,
           ),
