@@ -6,7 +6,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:movieapp/src/core/theme/app_color.dart';
 import 'package:movieapp/src/features/auth/presentation/view/Forgotpassword.dart';
 import 'package:movieapp/src/features/auth/presentation/view/registerpage.dart';
-import 'package:movieapp/src/features/movies/presentation/view/Homescreen.dart';
+import 'package:movieapp/src/features/movies/presentation/view/MainLayout.dart';
 import 'package:movieapp/src/features/movies/presentation/view/Moviedetails.dart';
 import '../../../../core/firebase/firbase_manager.dart';
 import '../../../../core/theme/widgets/app_text_form_field.dart';
@@ -61,7 +61,7 @@ class _LoginpageState extends State<Loginpage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Login Successful!')),
       );
-      Navigator.pushReplacementNamed(context, Home.routename);
+      Navigator.pushReplacementNamed(context, MainLayout.routename);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Login Failed, check your credentials.')),

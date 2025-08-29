@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movieapp/src/core/firebase/firbase_manager.dart';
 import 'package:movieapp/src/core/theme/app_color.dart';
-import 'package:movieapp/src/features/movies/presentation/view/Homescreen.dart';
+import 'package:movieapp/src/features/movies/presentation/view/MainLayout.dart';
 import '../../../../core/theme/widgets/app_text_form_field.dart';
 
 Widget _buildFlag({
@@ -154,7 +154,7 @@ class _RegisterpageState extends State<Registerpage> {
                       emailAddress: emailController.text.trim(),
                       password: passwordController.text.trim(),
                     );
-                    Navigator.push(context, MaterialPageRoute(builder: (_)=>Home()));
+                    Navigator.push(context, MaterialPageRoute(builder: (_)=>MainLayout()));
                   },
                   child: Text(
                     tr("Create Account"),

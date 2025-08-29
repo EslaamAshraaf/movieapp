@@ -39,6 +39,7 @@ dependencies:
   easy_localization: ^3.0.8
   firebase_core: ^4.0.0
   firebase_auth: ^6.0.1
+  carousel_slider: ^5.1.1
 
 dev_dependencies:
   flutter_test:

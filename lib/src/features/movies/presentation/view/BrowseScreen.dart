@@ -8,30 +8,7 @@ class Browse extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF121312),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.yellow,
-        unselectedItemColor: Colors.white,
-        backgroundColor: const Color(0xFF282A28),
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage("icons/home.png")),
-            label: "",
-          ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage("icons/search.png")),
-            label: "",
-          ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage("icons/bookmark.png")),
-            label: "",
-          ),
-          BottomNavigationBarItem(
-            icon: ImageIcon(AssetImage("icons/person.png")),
-            label: "",
-          ),
-        ],
-      ),
+
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
