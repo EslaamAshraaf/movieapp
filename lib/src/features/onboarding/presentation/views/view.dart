@@ -24,7 +24,7 @@ class _OnboardingState extends State<Onboarding> {
         curve: Curves.easeInOut,
       );
     } else if(_currentPage==viewModel.pages.length-1){
-      Navigator.pushReplacementNamed(context, Loginpage.routename);
+      Navigator.pushReplacementNamed(context, LoginPage.routename);
     }
   }
 
