@@ -5,10 +5,10 @@ import 'package:movieapp/src/features/auth/presentation/view/Forgotpassword.dart
 import 'package:movieapp/src/features/auth/presentation/view/loginpage.dart';
 import 'package:movieapp/src/features/auth/presentation/view/registerpage.dart';
 import 'package:movieapp/src/features/movies/presentation/view/BrowseScreen.dart';
-import 'package:movieapp/src/features/movies/presentation/view/Homescreen.dart';
+import 'package:movieapp/src/features/movies/presentation/view/MainLayout.dart';
 import 'package:movieapp/src/features/movies/presentation/view/Moviedetails.dart';
-import 'package:movieapp/src/features/movies/presentation/view/ProfileScreen.dart';
-import 'package:movieapp/src/features/movies/presentation/view/SearchScreen.dart';
+import 'package:movieapp/src/features/Profile/presentation/views/ProfileScreen.dart';
+import 'package:movieapp/src/features/search/presentation/views/SearchScreen.dart';
 import 'package:movieapp/src/features/onboarding/presentation/views/view_Main.dart';
 import 'src/core/firebase/firebase_options.dart';
 import 'src/features/onboarding/presentation/views/view.dart';
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
         LoginPage.routename: (_) => LoginPage(),
         Registerpage.routename: (_) => Registerpage(),
         Forgotpassword.routename: (_) => Forgotpassword(),
-        Home.routename: (_) => Home(),
+        MainLayout.routename: (_) => MainLayout(),
         Moviedetails.routename: (_) => Moviedetails(),
         Search.routename: (_) => Search(),
         Browse.routeName: (_) => Browse(),

@@ -11,35 +11,11 @@ class Profile extends StatelessWidget {
       length: 2,
       child: Scaffold(
         backgroundColor: Color(0xFF121312),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: 3,
-          selectedItemColor: Colors.yellow,
-          unselectedItemColor: Colors.white,
-          backgroundColor: Color(0xFF282A28),
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage("icons/home.png")),
-              label: "",
-            ),
-            BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage("icons/search.png")),
-              label: "",
-            ),
-            BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage("icons/bookmark.png")),
-              label: "",
-            ),
-            BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage("icons/person.png")),
-              label: "",
-            ),
-          ],
-        ),
+
         body: Column(
           children: [
             Flexible(
-              flex: 1,
+              flex: 0,
               child: Container(
                 color: Color(0xFF212121),
                 child: SafeArea(
@@ -48,7 +24,10 @@ class Profile extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Image.asset("images/gamer (1).png",fit: BoxFit.cover,),
+                          Image.asset(
+                            "assets/images/gamer (1).png",
+                            fit: BoxFit.cover,
+                          ),
                           Text(
                             "12",
                             style: TextStyle(
@@ -96,7 +75,7 @@ class Profile extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: 60),
+                      SizedBox(height: 30),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         child: Row(
@@ -126,7 +105,9 @@ class Profile extends StatelessWidget {
                             Expanded(
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(vertical: 15),
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 15,
+                                  ),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(15),
                                   ),
@@ -145,7 +126,10 @@ class Profile extends StatelessWidget {
                                       ),
                                     ),
                                     SizedBox(width: 5),
-                                    Icon(Icons.exit_to_app, color: Colors.white),
+                                    Icon(
+                                      Icons.exit_to_app,
+                                      color: Colors.white,
+                                    ),
                                   ],
                                 ),
                               ),
@@ -153,12 +137,10 @@ class Profile extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 5),
                       TabBar(
                         unselectedLabelColor: Colors.yellow,
-                        unselectedLabelStyle: TextStyle(
-                          color: Colors.white,
-                        ),
+                        unselectedLabelStyle: TextStyle(color: Colors.white),
 
                         indicatorColor: Colors.yellow,
                         indicatorWeight: 4,
@@ -173,7 +155,11 @@ class Profile extends StatelessWidget {
                         ),
                         tabs: [
                           Tab(
-                            icon: Icon(Icons.list, color: Colors.yellow, size: 35),
+                            icon: Icon(
+                              Icons.list,
+                              color: Colors.yellow,
+                              size: 35,
+                            ),
                             text: "Watch List",
                           ),
                           Tab(
@@ -197,10 +183,14 @@ class Profile extends StatelessWidget {
                 child: const TabBarView(
                   children: [
                     Center(
-                      child: Image(image: AssetImage("images/Empty 1.png")),
+                      child: Image(
+                        image: AssetImage("assets/images/Empty 1.png"),
+                      ),
                     ),
                     Center(
-                      child: Image(image: AssetImage("images/Empty 1.png")),
+                      child: Image(
+                        image: AssetImage("assets/images/Empty 1.png"),
+                      ),
                     ),
                   ],
                 ),
