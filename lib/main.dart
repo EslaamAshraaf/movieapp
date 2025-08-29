@@ -38,8 +38,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-
-      // add localization delegates
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
@@ -47,7 +45,7 @@ class MyApp extends StatelessWidget {
       routes: {
         Onboardingmain.routename: (_) => Onboardingmain(),
         Onboarding.routename: (_) => Onboarding(),
-        Loginpage.routename: (_) => Loginpage(),
+        LoginPage.routename: (_) => LoginPage(),
         Registerpage.routename: (_) => Registerpage(),
         Forgotpassword.routename: (_) => Forgotpassword(),
         MainLayout.routename: (_) => MainLayout(),
@@ -56,7 +54,7 @@ class MyApp extends StatelessWidget {
         Browse.routeName: (_) => Browse(),
         Profile.routeName: (_) => Profile(),
       },
-      initialRoute: Loginpage.routename,
+      initialRoute: Onboardingmain.routename,
     );
   }
 }
