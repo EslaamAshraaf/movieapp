@@ -17,5 +17,9 @@
   "dont_have_account": "Don’t have an account?",
   "create_one": "Create one",
   "or": "OR",
-  "login_google": "Login with Google"
+  "login_google": "Login with Google",
+  "verify_email": "Verify Email",
+  "reset_link_sent": "Password reset link has been sent to your email",
+  "user_not_found": "No user found with this email",
+  "error_occurred": "An error occurred, please try again"
 }
