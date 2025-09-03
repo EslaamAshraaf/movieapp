@@ -1,20 +1,20 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:movieapp/src/features/Profile/presentation/viewmodels/Editprofile_viewModel.dart';
 import 'package:provider/provider.dart';
+
+import 'package:movieapp/src/core/firebase/firebase_options.dart';
+import 'package:movieapp/src/features/Profile/presentation/viewmodels/Editprofile_viewModel.dart';
 import 'package:movieapp/src/features/Profile/presentation/views/Editprofile.dart';
+import 'package:movieapp/src/features/Profile/presentation/views/ProfileScreen.dart';
 import 'package:movieapp/src/features/auth/presentation/view/Forgotpassword.dart';
 import 'package:movieapp/src/features/auth/presentation/view/loginpage.dart';
 import 'package:movieapp/src/features/auth/presentation/view/registerpage.dart';
 import 'package:movieapp/src/features/movies/presentation/view/BrowseScreen.dart';
 import 'package:movieapp/src/features/movies/presentation/view/MainLayout.dart';
-import 'package:movieapp/src/features/movies/presentation/view/Moviedetails.dart';
-import 'package:movieapp/src/features/Profile/presentation/views/ProfileScreen.dart';
 import 'package:movieapp/src/features/search/presentation/views/SearchScreen.dart';
 import 'package:movieapp/src/features/onboarding/presentation/views/view_Main.dart';
-import 'src/core/firebase/firebase_options.dart';
-import 'src/features/onboarding/presentation/views/view.dart';
+import 'package:movieapp/src/features/onboarding/presentation/views/view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => UserViewModel(),
+          create: (_) => UserViewModel()..loadUserData(),
         ),
       ],
       child: MaterialApp(
@@ -60,12 +60,10 @@ class MyApp extends StatelessWidget {
           Search.routename: (_) => Search(),
           Browse.routeName: (_) => Browse(),
           Profile.routeName: (_) => Profile(),
-          EditProfile.routename: (_) => EditProfile(),
+          Editprofile.routename: (_) => Editprofile(),
         },
-
         initialRoute: Onboardingmain.routename,
       ),
-
     );
   }
 }
