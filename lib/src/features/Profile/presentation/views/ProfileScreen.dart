@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:movieapp/src/core/theme/app_color.dart';
+import 'package:movieapp/src/features/Profile/presentation/views/Editprofile.dart';
+import 'package:movieapp/src/features/auth/presentation/view/loginpage.dart';
 
 class Profile extends StatelessWidget {
   static const String routeName = "Profile";
@@ -12,23 +14,23 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     final uid = FirebaseAuth.instance.currentUser!.uid;
 
-    return FutureBuilder<DocumentSnapshot>(
-      future: FirebaseFirestore.instance.collection("users").doc(uid).get(),
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance.collection("users").doc(uid).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
-            backgroundColor: const Color(0xFF121312),
+            backgroundColor: AppColors.black,
             body: const Center(child: CircularProgressIndicator()),
           );
         }
 
         if (!snapshot.hasData || !snapshot.data!.exists) {
           return Scaffold(
-            backgroundColor: const Color(0xFF121312),
+            backgroundColor: AppColors.black,
             body: const Center(
               child: Text(
                 "No profile data found",
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                style: TextStyle(color: AppColors.white, fontSize: 20),
               ),
             ),
           );
@@ -40,7 +42,6 @@ class Profile extends StatelessWidget {
           length: 2,
           child: Scaffold(
             backgroundColor: const Color(0xFF121312),
-
             body: Column(
               children: [
                 Flexible(
@@ -50,11 +51,20 @@ class Profile extends StatelessWidget {
                     child: SafeArea(
                       child: Column(
                         children: [
+                          const SizedBox(height: 20),
+
+                          // Avatar + Counters
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Image.asset("assets/Profiles/profile1.png",
-                                  fit: BoxFit.cover),
+                              CircleAvatar(
+                                radius: 50,
+                                backgroundImage: AssetImage(
+                                  userData['avatar'] ??
+                                      "assets/Profiles/profile1.png",
+                                ),
+                                backgroundColor: AppColors.darkGray,
+                              ),
                               Text(
                                 "12",
                                 style: const TextStyle(
@@ -73,14 +83,18 @@ class Profile extends StatelessWidget {
                               ),
                             ],
                           ),
+
+                          const SizedBox(height: 10),
+
+                          // Name + Labels
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
-                                userData['name'] ?? "No Name", // ✅ من Firestore
+                                userData['name'] ?? "No Name",
                                 style: const TextStyle(
                                   color: Colors.white,
-                                  fontSize: 20,
+                                  fontSize: 30,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -102,7 +116,10 @@ class Profile extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 60),
+
+                          const SizedBox(height: 40),
+
+                          // Buttons (Edit + Exit)
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Row(
@@ -111,14 +128,17 @@ class Profile extends StatelessWidget {
                                   flex: 2,
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      padding:
-                                      const EdgeInsets.symmetric(vertical: 15),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 15),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
-                                      backgroundColor: const Color(0xFFF6BD00),
+                                      backgroundColor: AppColors.yellow,
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, Editprofile.routename);
+                                    },
                                     child: const Text(
                                       "Edit Profile",
                                       style: TextStyle(
@@ -133,18 +153,20 @@ class Profile extends StatelessWidget {
                                 Expanded(
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(vertical: 15),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 15),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
-                                      backgroundColor: const Color(0xFFE82626),
+                                      backgroundColor: AppColors.red,
                                     ),
                                     onPressed: () async {
                                       await FirebaseAuth.instance.signOut();
-                                      Navigator.pop(context);
+                                      Navigator.pushReplacementNamed(context, LoginPage.routename);
                                     },
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
                                       children: const [
                                         Text(
                                           "Exit",
@@ -164,7 +186,10 @@ class Profile extends StatelessWidget {
                               ],
                             ),
                           ),
+
                           const SizedBox(height: 10),
+
+                          // Tabs
                           const TabBar(
                             unselectedLabelColor: Colors.yellow,
                             indicatorColor: Colors.yellow,
@@ -195,16 +220,20 @@ class Profile extends StatelessWidget {
                     ),
                   ),
                 ),
+
+                // ================= BODY =================
                 Expanded(
                   child: Container(
                     color: const Color(0xFF121312),
                     child: const TabBarView(
                       children: [
                         Center(
-                          child: Image(image: AssetImage("assets/images/Empty 1.png")),
+                          child:
+                          Image(image: AssetImage("assets/images/Empty 1.png")),
                         ),
                         Center(
-                          child: Image(image: AssetImage("assets/images/Empty 1.png")),
+                          child:
+                          Image(image: AssetImage("assets/images/Empty 1.png")),
                         ),
                       ],
                     ),
