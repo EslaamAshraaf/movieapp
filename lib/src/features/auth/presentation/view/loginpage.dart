@@ -8,7 +8,8 @@ import 'package:movieapp/src/core/theme/app_color.dart';
 import 'package:movieapp/src/core/theme/widgets/app_text_form_field.dart';
 import 'package:movieapp/src/features/auth/presentation/view/registerpage.dart';
 import 'package:movieapp/src/features/auth/presentation/view/forgotpassword.dart';
-import 'package:movieapp/src/features/movies/presentation/view/homescreen.dart';
+import '../../../movies/presentation/view/Home_Screen.dart';
+import '../../../movies/presentation/view/MainLayout.dart';
 import '../view model/viewmodel.dart';
 
 class LoginPage extends StatelessWidget {
@@ -56,7 +57,10 @@ class LoginPage extends StatelessWidget {
                       controller: passwordController,
                       suffixIcon: IconButton(
                         onPressed: () {},
-                        icon: Icon(CupertinoIcons.eye_slash, color: AppColors.yellow),
+                        icon: Icon(
+                          CupertinoIcons.eye_slash,
+                          color: AppColors.yellow,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 17),
@@ -70,7 +74,10 @@ class LoginPage extends StatelessWidget {
                         alignment: Alignment.topRight,
                         child: Text(
                           tr("forget_password"),
-                          style: TextStyle(color: AppColors.yellow, fontSize: 14),
+                          style: TextStyle(
+                            color: AppColors.yellow,
+                            fontSize: 14,
+                          ),
                         ),
                       ),
                     ),
@@ -90,31 +97,38 @@ class LoginPage extends StatelessWidget {
                         onPressed: vm.isLoading
                             ? null
                             : () async {
-                          await vm.loginWithEmail(
-                            emailController.text.trim(),
-                            passwordController.text.trim(),
-                          );
-                          if (vm.user != null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Login Successful!')),
-                            );
-                            Navigator.pushReplacementNamed(context, Home.routename);
-                          } else if (vm.errorMessage != null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(vm.errorMessage!)),
-                            );
-                          }
-                        },
+                                await vm.loginWithEmail(
+                                  emailController.text.trim(),
+                                  passwordController.text.trim(),
+                                );
+                                if (vm.user != null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Login Successful!'),
+                                    ),
+                                  );
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    MainLayout.routename,
+                                  );
+                                } else if (vm.errorMessage != null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(vm.errorMessage!)),
+                                  );
+                                }
+                              },
                         child: vm.isLoading
-                            ? const CircularProgressIndicator(color: Colors.black)
+                            ? const CircularProgressIndicator(
+                                color: Colors.black,
+                              )
                             : Text(
-                          tr("login"),
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                                tr("login"),
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                       ),
                     ),
                     const SizedBox(height: 22),
@@ -123,7 +137,10 @@ class LoginPage extends StatelessWidget {
                     Text.rich(
                       TextSpan(
                         text: "${tr("dont_have_account")} ",
-                        style: const TextStyle(color: Colors.white70, fontSize: 16),
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 16,
+                        ),
                         children: [
                           TextSpan(
                             text: tr("create_one"),
@@ -134,7 +151,10 @@ class LoginPage extends StatelessWidget {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.pushNamed(context, Registerpage.routename);
+                                Navigator.pushNamed(
+                                  context,
+                                  Registerpage.routename,
+                                );
                               },
                           ),
                         ],
@@ -148,7 +168,11 @@ class LoginPage extends StatelessWidget {
                       child: Row(
                         children: [
                           Expanded(
-                            child: Divider(color: AppColors.yellow, thickness: 1, endIndent: 10),
+                            child: Divider(
+                              color: AppColors.yellow,
+                              thickness: 1,
+                              endIndent: 10,
+                            ),
                           ),
                           Text(
                             tr("or"),
@@ -159,7 +183,11 @@ class LoginPage extends StatelessWidget {
                             ),
                           ),
                           Expanded(
-                            child: Divider(color: AppColors.yellow, thickness: 1, indent: 10),
+                            child: Divider(
+                              color: AppColors.yellow,
+                              thickness: 1,
+                              indent: 10,
+                            ),
                           ),
                         ],
                       ),
@@ -180,18 +208,23 @@ class LoginPage extends StatelessWidget {
                         onPressed: vm.isLoading
                             ? null
                             : () async {
-                          await vm.loginWithGoogle();
-                          if (vm.user != null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Google Login Successful!')),
-                            );
-                            Navigator.pushReplacementNamed(context, Home.routename);
-                          } else if (vm.errorMessage != null) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(vm.errorMessage!)),
-                            );
-                          }
-                        },
+                                await vm.loginWithGoogle();
+                                if (vm.user != null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Google Login Successful!'),
+                                    ),
+                                  );
+                                  Navigator.pushReplacementNamed(
+                                    context,
+                                    MainLayout.routename,
+                                  );
+                                } else if (vm.errorMessage != null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(vm.errorMessage!)),
+                                  );
+                                }
+                              },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -217,28 +250,36 @@ class LoginPage extends StatelessWidget {
                     const SizedBox(height: 33),
 
                     // Language Switcher
-                    Container(
+                    SizedBox(
                       width: 100,
                       child: Directionality(
                         textDirection: ui.TextDirection.rtl,
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 6,
+                          ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(25),
-                            border: Border.all(color: AppColors.yellow, width: 2),
+                            border: Border.all(
+                              color: AppColors.yellow,
+                              width: 2,
+                            ),
                           ),
                           child: Row(
                             children: [
                               _buildFlag(
                                 asset: "assets/icons/usa.png",
                                 isSelected: currentLocale == "en",
-                                onTap: () => context.setLocale(const Locale('en')),
+                                onTap: () =>
+                                    context.setLocale(const Locale('en')),
                               ),
                               const SizedBox(width: 12),
                               _buildFlag(
                                 asset: "assets/icons/EG.png",
                                 isSelected: currentLocale == "ar",
-                                onTap: () => context.setLocale(const Locale('ar')),
+                                onTap: () =>
+                                    context.setLocale(const Locale('ar')),
                               ),
                             ],
                           ),
@@ -266,7 +307,9 @@ Widget _buildFlag({
     child: Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        border: isSelected ? Border.all(color: AppColors.yellow, width: 2) : null,
+        border: isSelected
+            ? Border.all(color: AppColors.yellow, width: 2)
+            : null,
       ),
       child: ClipOval(
         child: Image.asset(asset, width: 32, height: 32, fit: BoxFit.cover),

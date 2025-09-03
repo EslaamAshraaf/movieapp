@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:movieapp/src/features/Profile/presentation/viewmodels/Editprofile_viewModel.dart';
+import 'package:provider/provider.dart';
+import 'package:movieapp/src/features/Profile/presentation/views/Editprofile.dart';
 import 'package:movieapp/src/features/auth/presentation/view/Forgotpassword.dart';
 import 'package:movieapp/src/features/auth/presentation/view/loginpage.dart';
 import 'package:movieapp/src/features/auth/presentation/view/registerpage.dart';
@@ -26,7 +29,7 @@ Future<void> main() async {
       supportedLocales: [Locale('en'), Locale('ar')],
       path: 'assets/translations',
       startLocale: const Locale('en'),
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -36,25 +39,33 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => UserViewModel(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        routes: {
+          Onboardingmain.routename: (_) => Onboardingmain(),
+          Onboarding.routename: (_) => Onboarding(),
+          LoginPage.routename: (_) => LoginPage(),
+          Registerpage.routename: (_) => Registerpage(),
+          Forgotpassword.routename: (_) => Forgotpassword(),
+          MainLayout.routename: (_) => MainLayout(),
+          Search.routename: (_) => Search(),
+          Browse.routeName: (_) => Browse(),
+          Profile.routeName: (_) => Profile(),
+          EditProfile.routename: (_) => EditProfile(),
+        },
 
-      routes: {
-        Onboardingmain.routename: (_) => Onboardingmain(),
-        Onboarding.routename: (_) => Onboarding(),
-        LoginPage.routename: (_) => LoginPage(),
-        Registerpage.routename: (_) => Registerpage(),
-        Forgotpassword.routename: (_) => Forgotpassword(),
-        MainLayout.routename: (_) => MainLayout(),
-        Moviedetails.routename: (_) => Moviedetails(),
-        Search.routename: (_) => Search(),
-        Browse.routeName: (_) => Browse(),
-        Profile.routeName: (_) => Profile(),
-      },
-      initialRoute: Onboardingmain.routename,
+        initialRoute: Onboardingmain.routename,
+      ),
+
     );
   }
 }
