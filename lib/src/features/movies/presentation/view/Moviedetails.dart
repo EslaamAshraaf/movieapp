@@ -1,155 +1,182 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../../core/theme/app_color.dart';
+import '../viewmodels/MovieDetailsViewModel.dart';
+
 
 class Moviedetails extends StatelessWidget {
   static const String routename = "Moviedetails";
-  const Moviedetails({super.key});
+  final int movieId; // 👈 هنستقبل id بتاع الفيلم
+
+  const Moviedetails({super.key, required this.movieId});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Stack(
-        children: [
-          // Background Image (fixed)
-          Positioned.fill(
-            child: Image.asset(
-              "assets/images/drstrange.png",
-              fit: BoxFit.contain,
-              alignment: Alignment.topCenter,
-            ),
-          ),
+    return ChangeNotifierProvider(
+      create: (_) => MovieDetailsViewModel()..getMovieDetails(movieId),
+      child: Consumer<MovieDetailsViewModel>(
+        builder: (context, vm, _) {
+          if (vm.isLoading) {
+            return const Scaffold(
+              backgroundColor: Colors.black,
+              body: Center(
+                child: CircularProgressIndicator(color: Colors.red),
+              ),
+            );
+          }
 
-          // Scrollable content with gradient background
-          SingleChildScrollView(
-            padding: const EdgeInsets.only(top: 500),
-            child: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent, // Top transparent
-                    Colors.black,       // Bottom black
-                  ],
+          if (vm.errorMessage != null) {
+            return Scaffold(
+              backgroundColor: Colors.black,
+              body: Center(
+                child: Text(
+                  vm.errorMessage!,
+                  style: const TextStyle(color: Colors.red),
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Movie Title
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      "Doctor Strange in the Multiverse of Madness",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 24,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
+            );
+          }
 
-                  const SizedBox(height: 20),
-
-                  // Watch Button
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        minimumSize: const Size(double.infinity, 58),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: const Text(
-                        "Watch",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // Stats Row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildStatItem("15"),
-                      _buildStatItem("90"),
-                      _buildStatItem("7.6"),
-                    ],
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // Screen Shots Title
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      "Screen Shots",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  // Screenshot Image
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.asset(
-                        "assets/images/homeScreenshot.png",
-                        height: 120,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 40),
-                ],
+          final movie = vm.movie;
+          if (movie == null) {
+            return const Scaffold(
+              backgroundColor: Colors.black,
+              body: Center(
+                child: Text(
+                  "No movie details available",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
-            ),
-          ),
+            );
+          }
 
-          // Top Bar (Back + Bookmark) over everything
-          SafeArea(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // 🔥 هنا هنرجع نفس التصميم بتاعك بالـ Data الحقيقية
+          return Scaffold(
+            backgroundColor: Colors.black,
+            body: Stack(
               children: [
-                IconButton(
-                  onPressed: () => Navigator.pop(context),
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    size: 30,
-                    color: AppColors.white,
+                // Background Image (Movie Poster)
+                Positioned.fill(
+                  child: Image.network(
+                    movie.largeCoverImage ?? "",
+                    fit: BoxFit.contain,
+                    alignment: Alignment.topCenter,
                   ),
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.bookmark,
-                    size: 30,
-                    color: AppColors.white,
+
+                // Scrollable content
+                SingleChildScrollView(
+                  padding: const EdgeInsets.only(top: 500),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.transparent, Colors.black],
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Movie Title
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            movie.title ?? "",
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 24,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        // Watch Button
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              minimumSize: const Size(double.infinity, 58),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            onPressed: () {},
+                            child: const Text(
+                              "Watch",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        // Stats Row
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _buildStatItem("${movie.year ?? ''}"),
+                            _buildStatItem("${movie.runtime ?? ''} min"),
+                            _buildStatItem("${movie.rating ?? ''}"),
+                          ],
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        // Description
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            movie.descriptionFull ?? "",
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 40),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Top Bar (Back + Bookmark)
+                SafeArea(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          size: 30,
+                          color: AppColors.white,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.bookmark,
+                          size: 30,
+                          color: AppColors.white,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
