@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
           create: (_) => UserViewModel(),
         ),
       ],
-      child: MaterialApp(
+      child:MaterialApp(
         debugShowCheckedModeBanner: false,
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
@@ -57,14 +57,26 @@ class MyApp extends StatelessWidget {
           Registerpage.routename: (_) => Registerpage(),
           Forgotpassword.routename: (_) => Forgotpassword(),
           MainLayout.routename: (_) => MainLayout(),
-          Search.routename: (_) => Search(),
+          SearchScreen.routename: (_) => SearchScreen(),
           Browse.routeName: (_) => Browse(),
           Profile.routeName: (_) => Profile(),
           EditProfile.routename: (_) => EditProfile(),
         },
 
-        initialRoute: Onboardingmain.routename,
-      ),
+        // 👇 هنا بدل routes العادية استخدم onGenerateRoute
+        onGenerateRoute: (settings) {
+          if (settings.name == Moviedetails.routename) {
+            final movieId = settings.arguments as int; // 👈 هنا بناخد الـ id اللي اتبعت
+            return MaterialPageRoute(
+              builder: (_) => Moviedetails(movieId: movieId),
+            );
+          }
+          return null;
+        },
+
+        initialRoute: MainLayout.routename,
+      )
+
 
     );
   }
