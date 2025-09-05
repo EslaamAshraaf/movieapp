@@ -65,21 +65,63 @@ class Profile extends StatelessWidget {
                                 ),
                                 backgroundColor: AppColors.darkGray,
                               ),
-                              Text(
-                                "12",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 36,
-                                  fontWeight: FontWeight.bold,
-                                ),
+
+                              // ✅ Watchlist count
+                              StreamBuilder<QuerySnapshot>(
+                                stream: FirebaseFirestore.instance
+                                    .collection("users")
+                                    .doc(uid)
+                                    .collection("watchlist")
+                                    .snapshots(),
+                                builder: (context, snapshot) {
+                                  if (!snapshot.hasData) {
+                                    return const Text(
+                                      "0",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 36,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    );
+                                  }
+                                  return Text(
+                                    snapshot.data!.docs.length.toString(),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 36,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  );
+                                },
                               ),
-                              Text(
-                                "10",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 36,
-                                  fontWeight: FontWeight.bold,
-                                ),
+
+                              // ✅ History count
+                              StreamBuilder<QuerySnapshot>(
+                                stream: FirebaseFirestore.instance
+                                    .collection("users")
+                                    .doc(uid)
+                                    .collection("history")
+                                    .snapshots(),
+                                builder: (context, snapshot) {
+                                  if (!snapshot.hasData) {
+                                    return const Text(
+                                      "0",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 36,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    );
+                                  }
+                                  return Text(
+                                    snapshot.data!.docs.length.toString(),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 36,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -128,16 +170,14 @@ class Profile extends StatelessWidget {
                                   flex: 2,
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 15),
+                                      padding: const EdgeInsets.symmetric(vertical: 15),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
                                       backgroundColor: AppColors.yellow,
                                     ),
                                     onPressed: () {
-                                      Navigator.pushNamed(
-                                          context, Editprofile.routename);
+                                      Navigator.pushNamed(context, Editprofile.routename);
                                     },
                                     child: const Text(
                                       "Edit Profile",
@@ -153,8 +193,7 @@ class Profile extends StatelessWidget {
                                 Expanded(
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 15),
+                                      padding: const EdgeInsets.symmetric(vertical: 15),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
@@ -162,11 +201,11 @@ class Profile extends StatelessWidget {
                                     ),
                                     onPressed: () async {
                                       await FirebaseAuth.instance.signOut();
-                                      Navigator.pushReplacementNamed(context, LoginPage.routename);
+                                      Navigator.pushReplacementNamed(
+                                          context, LoginPage.routename);
                                     },
                                     child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: const [
                                         Text(
                                           "Exit",
@@ -177,8 +216,7 @@ class Profile extends StatelessWidget {
                                           ),
                                         ),
                                         SizedBox(width: 5),
-                                        Icon(Icons.exit_to_app,
-                                            color: Colors.white),
+                                        Icon(Icons.exit_to_app, color: Colors.white),
                                       ],
                                     ),
                                   ),
@@ -221,19 +259,102 @@ class Profile extends StatelessWidget {
                   ),
                 ),
 
-                // ================= BODY =================
                 Expanded(
                   child: Container(
                     color: const Color(0xFF121312),
-                    child: const TabBarView(
+                    child: TabBarView(
                       children: [
-                        Center(
-                          child:
-                          Image(image: AssetImage("assets/images/Empty 1.png")),
+                        StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection("users")
+                              .doc(uid)
+                              .collection("watchlist")
+                              .orderBy("dateAdded", descending: true)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            if (snapshot.data!.docs.isEmpty) {
+                              return const Center(
+                                child: Text(
+                                  "No movies in Watchlist",
+                                  style: TextStyle(
+                                      color: Colors.white70, fontSize: 18),
+                                ),
+                              );
+                            }
+                            return ListView.builder(
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                final movie =
+                                snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                                return ListTile(
+                                  leading: movie['cover'] != null
+                                      ? Image.network(movie['cover'],
+                                      width: 50, fit: BoxFit.cover)
+                                      : const Icon(Icons.movie, color: Colors.white),
+                                  title: Text(
+                                    movie['title'] ?? "Unknown",
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  subtitle: Text(
+                                    "Year: ${movie['year'] ?? '-'} | Rating: ${movie['rating'] ?? '-'}",
+                                    style: const TextStyle(
+                                        color: Colors.white70, fontSize: 12),
+                                  ),
+                                );
+                              },
+                            );
+                          },
                         ),
-                        Center(
-                          child:
-                          Image(image: AssetImage("assets/images/Empty 1.png")),
+                        StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection("users")
+                              .doc(uid)
+                              .collection("history")
+                              .orderBy("watchedAt", descending: true)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            if (snapshot.data!.docs.isEmpty) {
+                              return const Center(
+                                child: Text(
+                                  "No movies in History",
+                                  style: TextStyle(
+                                      color: Colors.white70, fontSize: 18),
+                                ),
+                              );
+                            }
+                            return ListView.builder(
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                final movie =
+                                snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                                return ListTile(
+                                  leading: movie['cover'] != null
+                                      ? Image.network(movie['cover'],
+                                      width: 50, fit: BoxFit.cover)
+                                      : const Icon(Icons.history, color: Colors.white),
+                                  title: Text(
+                                    movie['title'] ?? "Unknown",
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  subtitle: Text(
+                                    "Year: ${movie['year'] ?? '-'} | Rating: ${movie['rating'] ?? '-'}",
+                                    style: const TextStyle(
+                                        color: Colors.white70, fontSize: 12),
+                                  ),
+                                );
+                              },
+                            );
+                          },
                         ),
                       ],
                     ),

@@ -5,13 +5,17 @@ import '../viewmodels/BrowseViewModel.dart';
 import '../../data/Models/MovieListModel.dart';
 
 class Browse extends StatelessWidget {
-  static const routeName = "browse";
-  const Browse({super.key});
+  static const String routeName = "browse";
+  final String initialCategory;
+
+  const Browse({super.key, required this.initialCategory});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => BrowseViewModel()..getMovies(), // 👈 id افتراضي
+      create: (_) => BrowseViewModel()
+        ..getMovies()
+        ..changeCategory(initialCategory),
       child: Consumer<BrowseViewModel>(
         builder: (context, vm, child) {
           if (vm.isLoading) {
@@ -26,6 +30,13 @@ class Browse extends StatelessWidget {
 
           return Scaffold(
             backgroundColor: const Color(0xFF121312),
+            appBar: AppBar(
+              title: Text(
+                "${vm.selectedCategory} Movies",
+                style: const TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.black,
+            ),
             body: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
@@ -36,32 +47,39 @@ class Browse extends StatelessWidget {
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: [
-                          categoryChip("Action", vm),
-                          const SizedBox(width: 8),
-                          categoryChip("Drama", vm),
-                          const SizedBox(width: 8),
-                          categoryChip("Horror", vm),
-                          const SizedBox(width: 8),
-                          categoryChip("Comedy", vm),
-                        ],
+                        children: ["Action", "Drama", "Horror", "Comedy", "Sci-Fi"]
+                            .map((cat) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: categoryChip(cat, vm),
+                        ))
+                            .toList(),
                       ),
                     ),
                     const SizedBox(height: 16),
 
-                    /// 🔹 Movies Grid
+                    /// 🔹 Movies Grid (Responsive)
                     Expanded(
-                      child: GridView.builder(
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 12,
-                          crossAxisSpacing: 12,
-                          childAspectRatio: 0.65,
-                        ),
-                        itemCount: movies.length,
-                        itemBuilder: (context, index) {
-                          final movie = movies[index];
-                          return movieCard(context, movie);
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          int crossAxisCount = constraints.maxWidth > 800
+                              ? 5
+                              : constraints.maxWidth > 600
+                              ? 3
+                              : 2;
+
+                          return GridView.builder(
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: crossAxisCount,
+                              mainAxisSpacing: 12,
+                              crossAxisSpacing: 12,
+                              childAspectRatio: 0.65,
+                            ),
+                            itemCount: movies.length,
+                            itemBuilder: (context, index) {
+                              final movie = movies[index];
+                              return movieCard(context, movie);
+                            },
+                          );
                         },
                       ),
                     ),
@@ -81,8 +99,8 @@ class Browse extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(
           context,
-          Moviedetails.routename, // 👈 route بتاع صفحة التفاصيل
-          arguments: movie.id, // 👈 مررنا الـ movieId
+          Moviedetails.routename,
+          arguments: movie.id,
         );
       },
       child: ClipRRect(

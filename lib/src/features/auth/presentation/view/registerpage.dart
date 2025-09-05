@@ -5,8 +5,8 @@ import 'package:movieapp/src/core/firebase/firbase_manager.dart';
 import 'package:movieapp/src/core/theme/app_color.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:movieapp/src/features/movies/presentation/view/MainLayout.dart';
 import '../../../../core/theme/widgets/app_text_form_field.dart';
-import '../../../movies/presentation/view/Home_Screen.dart';
 
 class Registerpage extends StatefulWidget {
   static const String routename = "registerpage";
@@ -61,7 +61,7 @@ class _RegisterpageState extends State<Registerpage> {
         // ✅ التنقل للـ Home بعد النجاح
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (_) => HomeScreen()),
+          MaterialPageRoute(builder: (_) => MainLayout()),
         );
       }
     } catch (e) {
@@ -187,7 +187,7 @@ class _RegisterpageState extends State<Registerpage> {
                   child: _isLoading
                       ? const CircularProgressIndicator(color: Colors.black)
                       : Text(
-                    tr("Create Account"),
+                    tr("create_account"),
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: 20,

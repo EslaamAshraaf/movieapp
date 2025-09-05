@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../viewmodels/MovieDetailsViewModel.dart';
 
 class Moviedetails extends StatelessWidget {
@@ -56,17 +58,57 @@ class Moviedetails extends StatelessWidget {
                   backgroundColor: Colors.black,
                   expandedHeight: 400,
                   pinned: true,
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                  actions: [
+                    IconButton(
+                      icon: const Icon(Icons.bookmark_add,
+                          color: Colors.white, size: 28),
+                      onPressed: () async {
+                        final uid = FirebaseAuth.instance.currentUser!.uid;
+                        await FirebaseFirestore.instance
+                            .collection("users")
+                            .doc(uid)
+                            .collection("watchlist")
+                            .doc(movie.id.toString())
+                            .set({
+                          "id": movie.id,
+                          "title": movie.title,
+                          "cover": movie.mediumCoverImage,
+                          "year": movie.year,
+                          "rating": movie.rating,
+                          "runtime": movie.runtime,
+                          "dateAdded": DateTime.now(),
+                        });
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Movie saved to Watchlist!"),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                   flexibleSpace: FlexibleSpaceBar(
+                    title: Text(
+                      movie.title ?? "",
+                      style: const TextStyle(color: Colors.white),
+                    ),
                     background: Stack(
                       fit: StackFit.expand,
                       children: [
                         Image.network(
-                          movie.largeCoverImage != null && movie.largeCoverImage!.isNotEmpty
+                          movie.largeCoverImage != null &&
+                              movie.largeCoverImage!.isNotEmpty
                               ? movie.largeCoverImage!
                               : "https://via.placeholder.com/300x400.png?text=No+Image",
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) =>
-                              Image.asset("assets/images/placeholder.png", fit: BoxFit.cover),
+                              Image.asset("assets/images/placeholder.png",
+                                  fit: BoxFit.cover),
                         ),
                         Container(
                           decoration: const BoxDecoration(
@@ -86,28 +128,41 @@ class Moviedetails extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // ===== Watch Button =====
                       Padding(
                         padding: const EdgeInsets.all(16),
-                        child: Text(
-                          movie.title ?? "",
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 24,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red,
                             minimumSize: const Size(double.infinity, 58),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(12),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () async {
+                            final uid = FirebaseAuth.instance.currentUser!.uid;
+                            await FirebaseFirestore.instance
+                                .collection("users")
+                                .doc(uid)
+                                .collection("history")
+                                .doc(movie.id.toString())
+                                .set({
+                              "id": movie.id,
+                              "title": movie.title,
+                              "cover": movie.mediumCoverImage,
+                              "year": movie.year,
+                              "rating": movie.rating,
+                              "runtime": movie.runtime,
+                              "watchedAt": DateTime.now(),
+                            });
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Movie added to History!"),
+                                backgroundColor: Colors.blue,
+                              ),
+                            );
+                          },
                           child: const Text(
                             "Watch",
                             style: TextStyle(
@@ -119,46 +174,60 @@ class Moviedetails extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
+
+                      // ===== Stats =====
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          _buildStatItem(Icons.favorite, "${movie.likeCount ?? 0}"),
-                          _buildStatItem(Icons.schedule, "${movie.runtime ?? ''} min"),
+                          _buildStatItem(Icons.favorite,
+                              "${movie.likeCount ?? 0}"),
+                          _buildStatItem(
+                              Icons.schedule, "${movie.runtime ?? ''} min"),
                           _buildStatItem(Icons.star, "${movie.rating ?? ''}"),
                         ],
                       ),
+
                       const SizedBox(height: 20),
 
+                      // ===== Screen Shots =====
                       _buildSectionTitle("Screen Shots"),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Column(
                           children: [
-                            if (movie.mediumScreenshotImage1 != null && movie.mediumScreenshotImage1!.isNotEmpty)
+                            if (movie.mediumScreenshotImage1 != null &&
+                                movie.mediumScreenshotImage1!.isNotEmpty)
                               _buildScreenshot(movie.mediumScreenshotImage1!),
-                            if (movie.mediumScreenshotImage2 != null && movie.mediumScreenshotImage2!.isNotEmpty)
+                            if (movie.mediumScreenshotImage2 != null &&
+                                movie.mediumScreenshotImage2!.isNotEmpty)
                               _buildScreenshot(movie.mediumScreenshotImage2!),
-                            if (movie.mediumScreenshotImage3 != null && movie.mediumScreenshotImage3!.isNotEmpty)
+                            if (movie.mediumScreenshotImage3 != null &&
+                                movie.mediumScreenshotImage3!.isNotEmpty)
                               _buildScreenshot(movie.mediumScreenshotImage3!),
                           ],
                         ),
                       ),
+
                       const SizedBox(height: 20),
 
+                      // ===== Similar =====
                       _buildSectionTitle("Similar"),
                       vm.suggestions.isEmpty
                           ? const Padding(
                         padding: EdgeInsets.all(16),
                         child: Text(
                           "No similar movies found",
-                          style: TextStyle(color: Colors.white70, fontSize: 16),
+                          style: TextStyle(
+                              color: Colors.white70, fontSize: 16),
                         ),
                       )
                           : GridView.builder(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        padding:
+                        const EdgeInsets.symmetric(horizontal: 16),
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           mainAxisSpacing: 12,
                           crossAxisSpacing: 12,
@@ -167,48 +236,66 @@ class Moviedetails extends StatelessWidget {
                         itemCount: vm.suggestions.length,
                         itemBuilder: (_, index) {
                           final suggestion = vm.suggestions[index];
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.network(
-                                    suggestion.mediumCoverImage != null && suggestion.mediumCoverImage!.isNotEmpty
-                                        ? suggestion.mediumCoverImage!
-                                        : "https://via.placeholder.com/200x300.png?text=No+Image",
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) =>
-                                        Image.asset("assets/images/placeholder.png", fit: BoxFit.cover),
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => Moviedetails(
+                                      movieId: suggestion.id!),
+                                ),
+                              );
+                            },
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: ClipRRect(
+                                    borderRadius:
+                                    BorderRadius.circular(8),
+                                    child: Image.network(
+                                      suggestion.mediumCoverImage != null &&
+                                          suggestion.mediumCoverImage!
+                                              .isNotEmpty
+                                          ? suggestion.mediumCoverImage!
+                                          : "https://via.placeholder.com/200x300.png?text=No+Image",
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error,
+                                          stackTrace) =>
+                                          Image.asset(
+                                            "assets/images/placeholder.png",
+                                            fit: BoxFit.cover,
+                                          ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 6),
-                              Text(
-                                suggestion.title ?? "",
-                                style: const TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 14,
+                                const SizedBox(height: 6),
+                                Text(
+                                  suggestion.title ?? "",
+                                  style: const TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 14,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
+                              ],
+                            ),
                           );
                         },
                       ),
+
                       const SizedBox(height: 20),
 
-                      // ✅ Summary + Description
+                      // ===== Summary =====
                       _buildSectionTitle("Summary"),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
                           (movie.descriptionFull?.isNotEmpty == true)
                               ? movie.descriptionFull!
-                              : (movie.summary?.isNotEmpty == true)
-                              ? movie.summary!
                               : (movie.descriptionIntro?.isNotEmpty == true)
                               ? movie.descriptionIntro!
                               : "No summary available",
@@ -218,10 +305,10 @@ class Moviedetails extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
 
                       const SizedBox(height: 20),
 
+                      // ===== Cast =====
                       _buildSectionTitle("Cast"),
                       Column(
                         children: movie.cast?.map((actor) {
@@ -230,11 +317,12 @@ class Moviedetails extends StatelessWidget {
                             name: actor.name ?? "Unknown",
                             character: actor.characterName ?? "",
                           );
-                        }).toList() ??
-                            [],
+                        }).toList() ?? [],
                       ),
+
                       const SizedBox(height: 20),
 
+                      // ===== Genres =====
                       _buildSectionTitle("Genres"),
                       Wrap(
                         spacing: 8,
@@ -244,12 +332,13 @@ class Moviedetails extends StatelessWidget {
                           backgroundColor: Colors.red,
                           label: Text(
                             genre,
-                            style: const TextStyle(color: Colors.white),
+                            style: const TextStyle(
+                                color: Colors.white),
                           ),
                         ))
-                            .toList() ??
-                            [],
+                            .toList() ?? [],
                       ),
+
                       const SizedBox(height: 30),
                     ],
                   ),
@@ -263,12 +352,19 @@ class Moviedetails extends StatelessWidget {
   }
 
   Widget _buildStatItem(IconData icon, String text) {
-    return Row(
-      children: [
-        Icon(icon, color: Colors.red, size: 20),
-        const SizedBox(width: 6),
-        Text(text, style: const TextStyle(color: Colors.white70)),
-      ],
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: Colors.yellow, size: 22),
+          const SizedBox(width: 6),
+          Text(text, style: const TextStyle(color: Colors.white70)),
+        ],
+      ),
     );
   }
 
@@ -292,7 +388,9 @@ class Moviedetails extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
         child: Image.network(
-          url.isNotEmpty ? url : "https://via.placeholder.com/300x200.png?text=No+Image",
+          url.isNotEmpty
+              ? url
+              : "https://via.placeholder.com/300x200.png?text=No+Image",
           fit: BoxFit.cover,
           width: double.infinity,
           height: 200,

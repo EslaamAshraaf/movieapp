@@ -15,7 +15,7 @@ class MainLayout extends StatefulWidget {
 }
 
 class _MainLayoutState extends State<MainLayout> {
-  final List<Widget> pages = [HomeScreen(), SearchScreen(), Browse(), Profile()];
+  final List<Widget> pages = [HomeScreen(), SearchScreen(), Browse(initialCategory: '',), Profile()];
   int currentIndex = 0;
 
   @override
