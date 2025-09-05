@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:movieapp/src/core/theme/app_color.dart';
+import 'package:movieapp/src/features/auth/presentation/view/loginpage.dart';
 
 class Editprofile extends StatefulWidget {
   static const routename = "Editprofile";
@@ -29,8 +30,7 @@ class EditprofileState extends State<Editprofile> {
 
   Future<void> _loadUserData() async {
     final uid = FirebaseAuth.instance.currentUser!.uid;
-    final doc =
-    await FirebaseFirestore.instance.collection("users").doc(uid).get();
+    final doc = await FirebaseFirestore.instance.collection("users").doc(uid).get();
     if (doc.exists) {
       final data = doc.data()!;
       setState(() {
@@ -49,6 +49,21 @@ class EditprofileState extends State<Editprofile> {
       "phone": _phoneController.text.trim(),
       "avatar": selectedAvatar,
     });
+  }
+
+  Future<void> _deleteAccount() async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+
+    try {
+      await FirebaseFirestore.instance.collection("users").doc(uid).delete();
+      await FirebaseAuth.instance.currentUser!.delete();
+
+      Navigator.pushReplacementNamed(context, LoginPage.routename);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Failed to delete account: $e")),
+      );
+    }
   }
 
   void _pickAvatar() {
@@ -158,6 +173,25 @@ class EditprofileState extends State<Editprofile> {
             ),
             const Spacer(),
 
+            // ✅ Delete account button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.red,
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+                onPressed: _deleteAccount,
+                child: const Text(
+                  "Delete Account",
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -167,7 +201,7 @@ class EditprofileState extends State<Editprofile> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                 ),
-                onPressed: _updateProfile ,
+                onPressed: _updateProfile,
                 child: const Text(
                   "Update Data",
                   style: TextStyle(fontSize: 16, color: AppColors.black),

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:movieapp/src/features/movies/presentation/view/BrowseScreen.dart';
 import 'package:provider/provider.dart';
-
 import '../../data/Models/MovieListModel.dart';
 import '../viewmodels/HomeViewModel.dart';
 import 'Moviedetails.dart';
 
-
 class HomeScreen extends StatelessWidget {
   static const String routename = "home";
+
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => HomeViewModel()..getMovies(), // استدعاء API عند فتح الصفحة
+      create: (_) => HomeViewModel()..getMovies(),
       child: Consumer<HomeViewModel>(
         builder: (context, vm, child) {
           if (vm.isLoading) {
@@ -68,7 +68,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
 
-                    /// 🔹 CarouselSlider من الـ movies
+                    /// 🔹 CarouselSlider
                     CarouselSlider(
                       options: CarouselOptions(
                         height: 300,
@@ -78,11 +78,21 @@ class HomeScreen extends StatelessWidget {
                         autoPlayInterval: const Duration(seconds: 3),
                       ),
                       items: movies.take(5).map((movie) {
-                        return ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: Image.network(
-                            movie.largeCoverImage ?? "",
-                            fit: BoxFit.cover,
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => Moviedetails(movieId: movie.id!),
+                              ),
+                            );
+                          },
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.network(
+                              movie.largeCoverImage ?? "",
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         );
                       }).toList(),
@@ -96,38 +106,12 @@ class HomeScreen extends StatelessWidget {
                       width: double.infinity,
                     ),
 
-                    /// مثال قسم الأكشن (هيعرض الأفلام اللي Genre = Action)
-                    buildCategoryRow("Action"),
-                    buildMovieList(
-                      movies.where((m) => m.genres?.contains("Action") ?? false).toList(),
-                      context,
-                    ),
-
-                    /// قسم Adventure
-                    buildCategoryRow("Drama"),
-                    buildMovieList(
-                      movies.where((m) => m.genres?.contains("Drama") ?? false).toList(),
-                      context,
-                    ),
-
-                    /// قسم Animation
-                    buildCategoryRow("Horror"),
-                    buildMovieList(
-                      movies.where((m) => m.genres?.contains("Horror") ?? false).toList(),
-                      context,
-                    ),
-
-                    /// قسم Biography
-                    buildCategoryRow("Comedy"),
-                    buildMovieList(
-                      movies.where((m) => m.genres?.contains("Comedy") ?? false).toList(),
-                      context,
-                    ),
-                    buildCategoryRow("Sci-Fi"),
-                    buildMovieList(
-                      movies.where((m) => m.genres?.contains("Sci-Fi") ?? false).toList(),
-                      context,
-                    ),
+                    /// 🔹 Categories Sections
+                    buildCategorySection("Action", movies, context),
+                    buildCategorySection("Drama", movies, context),
+                    buildCategorySection("Horror", movies, context),
+                    buildCategorySection("Comedy", movies, context),
+                    buildCategorySection("Sci-Fi", movies, context),
 
                     const SizedBox(height: 10),
                   ],
@@ -140,8 +124,22 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  /// 🔹 ويدجت للعنوان
-  Widget buildCategoryRow(String title) {
+  /// 🔹 ويدجت للقسم بالكامل
+  Widget buildCategorySection(String title, List<Movies> movies, BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        buildCategoryRow(title, context),
+        buildMovieList(
+          movies.where((m) => m.genres?.contains(title) ?? false).toList(),
+          context,
+        ),
+      ],
+    );
+  }
+
+  /// 🔹 العنوان مع زر See More
+  Widget buildCategoryRow(String title, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
@@ -155,12 +153,22 @@ class HomeScreen extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
-          const Text(
-            "See More →",
-            style: TextStyle(
-              color: Colors.yellow,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => Browse(initialCategory: title),
+                ),
+              );
+            },
+            child: const Text(
+              "See More →",
+              style: TextStyle(
+                color: Colors.yellow,
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],
@@ -168,7 +176,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  /// 🔹 ويدجت لقائمة الأفلام
+  /// 🔹 قائمة الأفلام
   Widget buildMovieList(List<Movies> movies, BuildContext context) {
     return SizedBox(
       height: 220,
@@ -180,7 +188,7 @@ class HomeScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => Moviedetails(movieId: movie.id!), // 👈 إرسال الـ id
+                  builder: (_) => Moviedetails(movieId: movie.id!),
                 ),
               );
             },
@@ -200,5 +208,4 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-
 }
