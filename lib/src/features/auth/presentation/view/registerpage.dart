@@ -7,7 +7,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:movieapp/src/features/movies/presentation/view/MainLayout.dart';
 import '../../../../core/theme/widgets/app_text_form_field.dart';
-import '../../../movies/presentation/view/Home_Screen.dart';
 
 class Registerpage extends StatefulWidget {
   static const String routename = "registerpage";

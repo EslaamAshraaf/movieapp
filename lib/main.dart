@@ -1,8 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:movieapp/src/features/movies/presentation/view/MainLayout.dart';
-import 'package:movieapp/src/features/onboarding/presentation/views/view_Main.dart';
 import 'package:movieapp/src/features/splash/splash.dart';
 import 'package:provider/provider.dart';
 import 'package:movieapp/src/core/firebase/firebase_options.dart';

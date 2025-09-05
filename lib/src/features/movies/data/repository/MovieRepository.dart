@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-
 import '../Models/MovieDetailsModel.dart';
 import '../Models/MovieListModel.dart';
-import '../Models/MovieSuggestionsModel.dart';
 
 class MovieRepository {
   static const String baseUrl = "https://yts.mx/api/v2";
