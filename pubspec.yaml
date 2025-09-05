@@ -44,6 +44,8 @@ dependencies:
   provider: ^6.1.2
   http: ^1.5.0
   cloud_firestore: ^6.0.1
+  readmore: ^2.2.0
+
 
 
 dev_dependencies:
